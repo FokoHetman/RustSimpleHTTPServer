@@ -61,15 +61,15 @@ fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
   let (status_line, filename) = match &request_line[..] {
     
     "GET / HTTP/1.1" => {
-      ("HTTP/1.1 200 OK", "/home/kaniapatryk/Projects/SimpleHTTPServer.rs/templates/index.html")
+      ("HTTP/1.1 200 OK", "index.html")
     }
     "GET /sleep HTTP/1.1" => {
       thread::sleep(Duration::from_secs(5));
-      ("HTTP/1.1 200 OK", "/home/kaniapatryk/Projects/SimpleHTTPServer.rs/templates/index.html")
+      ("HTTP/1.1 200 OK", "index.html")
     },
     _ => {
       //verify if request_line.replace("GET", "").replace("HTTP/1.1", "") exists as a file. If it does, copy it into stream.
-      let mut returned: (&str, &str) = ("HTTP/1.1 404 NOT FOUND", "/home/kaniapatryk/Projects/SimpleHTTPServer.rs/templates/404.html");
+      let mut returned: (&str, &str) = ("HTTP/1.1 404 NOT FOUND", "/404.html");
       for x in all_files.clone() {
         println!("File: {:#?}", x);
         let strx = "".to_owned() + &x.into_os_string().into_string().unwrap().replace("./", "/");
@@ -94,7 +94,7 @@ fn handle_connection(mut stream: TcpStream) -> io::Result<()> {
           if is_file {
             openable_file = ".".to_owned() + &strx;
           }
-          returned = ("HTTP/1.1 200 OK", "/home/kaniapatryk/Projects/SimpleHTTPServer.rs/templates/index.html");
+          returned = ("HTTP/1.1 200 OK", "index.html");
           break;
         }
       }
